@@ -1,0 +1,172 @@
+#include<iostream>
+#include<windows.h>
+#include<sstream>
+#include<fstream>
+using namespace std;
+class login{
+    private:
+    string loginID;
+    string password;
+    string ad;
+    public:
+    login(){
+        loginID = "";
+        password = "";
+        ad = "";
+    }
+    void setad(string a){
+        ad = a;
+    }
+    void setID(string id){
+        loginID = id;
+    }
+    void setPass(string pass){
+        password = pass;
+    }
+    string getad() {
+        return ad;
+    }
+    string getID(){
+        return loginID;
+    }                   
+    string getPass(){
+        return password;
+    }                            
+};
+void log(){
+    system("cls");
+    Sleep(5000);
+    string id, pass;
+    string ad;
+    cout<<"\tWELCOME TO LOGIN FORM\n"<<endl;
+    cout<<"\t************************\n"<<endl;
+    cout<<"\tEnter your login ID: ";
+    cin>>id;
+    cout<<"\tEnter your password: ";
+    cin>>pass;
+    cout<<"\tEnter your ADHAAR NO: " ;
+    cin>>ad;
+    ifstream in("C:\\Users\\semwa\\C++\\DSA\\projects\\login.txt");
+    if(!in){
+       cout<<"\tError: File Can't Open!"<<endl;
+    }
+    else{
+        string line;
+        bool found = false;
+        while(getline(in, line)){ // in mai se data lete rhega aur line m dalte rhega
+            stringstream ss; 
+            ss<<line;
+            string id1, pass1; string ad1;
+            char delimiter;
+            ss>>id1>>delimiter>>pass1>>delimiter>>ad1;
+            if(id == id1 && pass == pass1 && ad == ad1){
+                found = true;
+                cout<<"\tLogging in";
+                for(int i = 0; i<3; i++){
+                    cout<<".";
+                    Sleep(500);
+                }
+                system("cls");
+                cout<<"\tLogin Successful!"<<endl;
+                cout<<"\tWelcome "<<id1<<endl; 
+                break;
+            }
+        }
+        if(!found){
+            cout<<"\tLogin Failed!"<<endl;
+        }
+    }
+    in.close();
+    Sleep(3000);
+}
+void reg(login l){
+ system("cls");
+ string id,pass;
+ string ad;
+ cout<<"\tEnter your login ID: ";
+ cin>>id;
+ l.setID(id);
+
+  while (true) {
+        cout << "\tEnter your password: " << endl;
+        cout << "\tPassword must be at least 8 characters: " << endl;
+        cin >> pass;
+
+        if (pass.length() >= 8) {
+            // Assuming l.setPass is defined elsewhere
+            l.setPass(pass);
+            break; // Exit the loop if the password is valid
+        } else {
+            cout << "\tPassword is not of 8 characters" << endl;
+        }
+    }
+
+    // Aadhaar validation
+    while (true) {
+        cout << "\tEnter your Aadhaar number: " << endl;
+        cout << "\tAadhaar numbers must be 12 characters: " << endl;
+        cin >> ad;
+
+        if (ad.length() == 12) {
+            // Assuming l.setAd is defined elsewhere
+            l.setad(ad);
+            break; // Exit the loop if the Aadhaar is valid
+        } else {
+            cout << "\tAadhaar number is not of 12 characters" << endl;
+        }
+    }
+
+
+ ofstream out("C:\\Users\\semwa\\C++\\DSA\\projects\\login.txt", ios::app);
+if(!out){
+    cout<<"\tError: File Can't Open!"<<endl;
+ }
+ else{
+    out<<l.getID()<<" : "<<l.getPass()<<" : "<<l.getad()<<endl;
+    cout<<endl;
+    cout<<"\tRegistration Successful!"<<endl;
+ }
+ out.close();
+ Sleep(3000);
+}
+
+int main(){
+    login l;
+    bool exit = false;
+    while(!exit){
+        system("cls");
+        int val;
+        cout<<"\tWELCOME TO REGISTRATION AND LOGIN FORM\n"<<endl;
+        cout<<"\t**************************************\n"<<endl;
+        cout<<"\t1. Register\n"<<endl;
+        cout<<"\t2. Login\n"<<endl;
+        cout<<"\t3. Exit\n"<<endl;
+        cout<<"\tEnter your choice: ";
+        cin>>val;
+        Sleep(3000);
+     switch(val){
+        case 1:{
+            reg(l);
+            break;
+        }
+        case 2:{
+            log();
+            break;
+        }
+        case 3:{
+            system("cls");
+            exit = true;
+            cout<<"\tExiting..."<<endl;
+            Sleep(3000);
+            break;
+        }
+        default:{
+            cout<<"\tInvalid Choice!"<<endl;
+            Sleep(3000);
+            break;
+        }
+     }
+      
+    }
+    return 0;
+}
